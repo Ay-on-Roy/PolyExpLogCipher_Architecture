@@ -8,10 +8,6 @@ from argon2.low_level import hash_secret_raw, Type
 
 
 class PolyExpLogCipher:
-    """
-    A multi-layer symmetric cipher that applies exponential, polynomial, wave, logarithmic,
-    and custom transformations. Uses Argon2-based key derivation.
-    """
 
     def __init__(self, passphrase: str, prime: int = 15485863) -> None:
         if not passphrase:
@@ -163,17 +159,10 @@ class PolyExpLogCipher:
         return bytes(plaintext_bytes)
 
     def encrypt_to_string(self, plaintext_bytes: bytes) -> str:
-        """
-        Encrypt plaintext bytes and produce a compact single string ciphertext.
-        Uses hexadecimal for compactness without external modules.
-        """
         ciphertext = self.encrypt(plaintext_bytes)
         hex_parts = [f"{c:06x}" for c in ciphertext]
         return "".join(hex_parts)
 
     def decrypt_from_string(self, cipher_string: str) -> bytes:
-        """
-        Decrypt a single string ciphertext back to plaintext bytes.
-        """
         ciphertext = [int(cipher_string[i:i+6], 16) for i in range(0, len(cipher_string), 6)]
         return self.decrypt(ciphertext)
